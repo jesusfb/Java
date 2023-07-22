@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+    app:
+        image: app
+        container_name: app
+        restart: always
+        build:
+            context: ../source
+            dockerfile: ../.docker/dockerfile
+        depends_on:
+            - database
+        networks:
+            - network
+        ports:
+            - 8080:8080
+        environment:
+            - SPRING_DATA_MONGODB_HOST=database
+    database:
+        image: mongo
+        container_name: database
+        restart: always
+        networks:
+            - network
+        ports:
+            - 27017:27017
+        volumes:
+            - database:/data/db
+networks:
+    network:
+volumes:
+    database:
